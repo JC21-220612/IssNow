@@ -50,7 +50,10 @@ namespace IssNow.api
             {
                 if (double.TryParse(Latitude, out double lat))
                 {
-                    return lat >= 0 ? "S" : "N";
+                    if (lat == 0) return "N"; // 0度はN
+                    if (lat == 90) return "N"; // 90度はN
+                    if (lat == -90) return "S"; // -90度はS
+                    return lat >= 0 ? "N" : "S";
                 }
                 return "Invalid"; // エラー時の値
             }
@@ -63,6 +66,9 @@ namespace IssNow.api
             {
                 if (double.TryParse(Longitude, out double lon))
                 {
+                    if (lon == 0) return "E"; // 0度はE
+                    if (lon == 90) return "E"; // 90度はE
+                    if (lon == 180 || lon == -180) return "E"; // 180度と-180度はE
                     return lon >= 0 ? "E" : "W";
                 }
                 return "Invalid"; // エラー時の値
